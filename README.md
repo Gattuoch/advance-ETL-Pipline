@@ -25,15 +25,6 @@ Organizations often collect data from multiple formats and sources (CSV, Parquet
 
 ![Architecture 1](bi/Architecture.png)
 
-```
-Data Sources (CSV / Parquet / API)
-        ↓
-Apache PySpark (Distributed Transformations)
-        ↓
-DuckDB (Analytical Data Warehouse)
-        ↓
-BI Tool (Tableau / Power BI)
-```
 
 **Orchestration:** Apache Airflow schedules and monitors each pipeline stage.
 
