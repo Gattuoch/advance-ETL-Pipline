@@ -1,0 +1,10 @@
+name: climate_dbt
+version: '1.0'
+profile: climate_dbt
+
+models:
+  climate_dbt:
+    staging:
+      materialized: view
+    marts:
+      materialized: table

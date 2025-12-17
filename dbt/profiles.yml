@@ -1,0 +1,7 @@
+climate_dbt:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: ../analytics.db
+      threads: 4

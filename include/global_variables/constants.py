@@ -1,3 +1,5 @@
+
+#constants.py
 # tables names
 IN_CURRENT_WEATHER_TABLE_NAME = "in_current_weather"
 IN_CLIMATE_TABLE_NAME = "in_climate"

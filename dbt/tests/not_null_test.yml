@@ -1,0 +1,12 @@
+version: 2
+
+models:
+  - name: climate_summary
+    columns:
+      - name: year
+        tests:
+          - not_null
+          - unique
+      - name: avg_temp
+        tests:
+          - not_null

@@ -1,209 +1,170 @@
-# Overview
+# End-to-End Advanced ETL Data Pipeline
 
-Welcome to this hands-on repository to get started with [Apache Airflow](https://airflow.apache.org/)! :rocket:
+## Project Overview
 
-This repository contains a simple Airflow pipeline following an ELT pattern that you can run in GitHub codespaces or locally with the [Astro CLI](https://docs.astronomer.io/astro/cli/install-cli). Your pipeline will ingest climate data from a CSV file and local weather data from an API to create interactive visualizations of temperature changes over time.
+This project implements an **end-to-end advanced ETL (Extract, Transform, Load) data pipeline** designed to process large-scale datasets using distributed computing and modern analytics tools. The objective is to ingest data from multiple heterogeneous sources, transform it efficiently using **Apache PySpark**, store analytical outputs in **DuckDB**, and expose insights through an interactive **BI dashboard**.
 
-Your pipeline will accomplish this using six Airflow DAGs and the following tools:
+The pipeline is fully orchestrated using **Apache Airflow**, ensuring reliability, scalability, and scheduled execution. This implementation satisfies all core and bonus requirements of the assignment.
 
-- [DuckDB](https://duckdb.org/), a relational database, for storing tables of the ingested data as well as the resulting tables after transformations.
-- [Streamlit](https://streamlit.io/), a Python package for creating interactive apps, for displaying the data as a dashboard. The Streamlit app will retrieve its data from tables in DuckDB.
+---
 
-All tools used are open-source, so you will not need to create additional accounts.
+## Business Problem
 
-After completing all tasks, the Streamlit app will look similar to the following screenshots:
+Organizations often collect data from multiple formats and sources (CSV, Parquet, APIs), making analytics difficult without a unified processing and storage layer. This project demonstrates how to:
 
-![Finished Streamlit App Part 1](src/streamlit_result_1.png)
-![Finished Streamlit App Part 2](src/streamlit_result_2.png)
-![Finished Streamlit App Part 3](src/streamlit_result_3.png)
+* Integrate multiple raw data sources
+* Perform scalable transformations on large datasets
+* Store analytics-ready data in a high-performance analytical database
+* Deliver actionable insights through BI dashboards
 
-## Part 1: Run a fully functional pipeline
+---
 
-Follow the [Part 1 Instructions](#part-1-instructions) to get started!
+## Architecture
 
-The ready to run Airflow pipeline consists of 4 DAGs and will:
+**Pipeline Flow:**
 
-- Retrieve the current weather for your city from an API.
-- Ingest climate data from a local CSV file.
-- Load the data into DuckDB.
-- Run a transformation on the data to create a reporting table powering a Streamlit app.
+```
+Data Sources (CSV / Parquet / API)
+        ↓
+Apache PySpark (Distributed Transformations)
+        ↓
+DuckDB (Analytical Data Warehouse)
+        ↓
+BI Tool (Tableau / Power BI)
+```
 
-## Part 2: Exercises
+**Orchestration:** Apache Airflow schedules and monitors each pipeline stage.
 
-Follow the [Part 2 Instructions](#part-2-instructions-exercises) to extend the pipeline to show historical weather data for cities of your choice in the Streamlit app.
-During this process you will learn about Airflow features including [Datasets](https://docs.astronomer.io/learn/airflow-datasets), [dynamic task mapping](https://docs.astronomer.io/learn/dynamic-tasks), and the [TaskFlow API](https://www.astronomer.io/docs/learn/airflow-decorators#how-to-use-the-taskflow-api).
+---
 
-## Part 3: Play with it!
+## Data Sources
 
-Use this repository to explore Airflow best practices, experiment with your own DAGs and as a template for your own projects!
+This project integrates **three distinct data sources**, including at least one Parquet file:
 
-This project was created with :heart: by [Astronomer](https://www.astronomer.io/).
+1. **Climate CSV Data** – Historical climate measurements
+2. **Parquet Dataset** – Structured columnar dataset for efficient reads
+3. **Weather API (JSON)** – Near real-time weather data ingestion
 
-> If you are looking for an entry-level written tutorial where you build your own DAG from scratch, check out: [Get started with Apache Airflow, Part 1: Write and run your first DAG](https://docs.astronomer.io/learn/get-started-with-airflow).
+---
 
-# How to use this repository
+## Technologies Used
 
-## Setting up
+* **Apache PySpark** – Distributed data transformation and aggregation
+* **DuckDB** – High-performance analytical database
+* **Apache Airflow** – Workflow orchestration and scheduling
+* **Python** – Data extraction, validation, and loading
+* **Docker** – Containerized development and execution
+* **BI Tool (Tableau / Power BI)** – Interactive dashboards and reporting
 
-### Option 1: Use GitHub Codespaces
+---
 
-Run this Airflow project without installing anything locally.
+## ETL Pipeline Stages
 
-1. Fork this repository.
-2. Create a new GitHub Codespaces project on your fork. Make sure it uses at least 4 cores!
+### 1. Extract
 
-    ![Fork repo and create a Codespaces project](src/fork_and_codespaces.png)
-3. Run this command in the Codespaces terminal: `bash ./.devcontainer/post_creation_script.sh`.
-4. The Astro CLI will automatically start up all necessary Airflow components as well as the Streamlit app. This can take a few minutes. 
-5. Once the Airflow project has started, access the Airflow UI by clicking on the **Ports** tab and opening the forward URL for port 8080.
+* Read CSV files using Spark
+* Load Parquet datasets using Spark
+* Fetch JSON data from a weather API
 
-    ![Open Airflow UI URL Codespaces](src/open_airflow_ui_codespaces.png)
+### 2. Transform (PySpark)
 
-6. Once the Streamlit app is running, you can access it by by clicking on the **Ports** tab and opening the forward URL for port 8501.
+* Data cleaning and schema normalization
+* Time-based aggregations (yearly/monthly)
+* Analytical transformations (averages, trends, rankings)
 
-### Option 2: Use the Astro CLI
+### 3. Load
 
-Download the [Astro CLI](https://docs.astronomer.io/astro/cli/install-cli) to run Airflow locally in Docker. `astro` is the only package you will need to install.
+* Persist transformed datasets into **DuckDB** tables
+* Overwrite or append modes supported for analytical use cases
 
-1. Run `git clone https://github.com/astronomer/airflow-quickstart.git` on your computer to create a local clone of this repository.
-2. Install the Astro CLI by following the steps in the [Astro CLI documentation](https://docs.astronomer.io/astro/cli/install-cli). Docker Desktop/Docker Engine is a prerequisite, but you don't need in-depth Docker knowledge to run Airflow with the Astro CLI.
-3. Run `astro dev start` in your cloned repository.
-4. After your Astro project has started. View the Airflow UI at `localhost:8080`.
-5. View the Streamlit app at `localhost:8501`. NOTE: The Streamlit container can take a few minutes to start up.
+---
 
-## Run the project
+## Orchestration (Bonus Requirement)
 
-### Part 1 Instructions
+The pipeline is orchestrated using **Apache Airflow**:
 
-All DAGs tagged with `part_1` are part of a pre-built, fully functional Airflow pipeline. To run them:
+* DAGs manage extraction, transformation, and loading tasks
+* Supports retries, logging, and scheduling
+* Pipeline is scheduled to run automatically (e.g., daily or weekly)
 
-1. Go to `include/global_variables/user_input_variables.py` and enter your own info for `MY_NAME` and `MY_CITY`.
-2. Trigger the `start` DAG and unpause all DAGs that are tagged with `part_1` by clicking on the toggle on their lefthand side. Once the `start` DAG is unpaused, it will run once, starting the pipeline. You can also run this DAG manually to trigger further pipeline runs by clicking on the play button on the right side of the DAG.
+---
 
-    The DAGs that will run are:
+## Project Structure
 
-    - `start`
-    - `extract_current_weather_data`
-    - `in_climate_data`
-    - `transform_climate_data`
+```
+end-to-end-etl/
+├── dags/                  # Airflow DAG definitions
+├── include/               # Raw datasets (CSV / Parquet)
+├── spark/                 # PySpark transformation scripts
+├── plugins/               # Custom Airflow plugins (if any)
+├── docker-compose.yml     # Container orchestration
+├── Dockerfile             # Runtime environment
+├── requirements.txt       # Python dependencies
+├── README.md              # Project documentation
+```
 
-3. Watch the DAGs run according to their dependencies, which have been set using [Datasets](https://docs.astronomer.io/learn/airflow-datasets).
+---
 
-    ![Dataset and DAG Dependencies](src/part_1_dataset_dependencies.png)
+## How to Run the Project
 
-4. Open the Streamlit app. If you are using Codespaces, go to the **Ports** tab and open the URL of the forwarded port `8501`. If you are running locally go to `localhost:8501`.
+### Prerequisites
 
-    ![Open Streamlit URL Codespaces](src/open_streamlit_codespaces.png)
+* Docker & Docker Compose
+* Python 3.9+
 
-5. View the Streamlit app, now showing global climate data and the current weather for your city.
+### Steps
 
-    ![Streamlit app](src/part_1_streamlit_app.png)
+```bash
+# Start Airflow and services
+astro dev start
 
+# Access Airflow UI
+http://localhost:8080
 
-### Part 2 Instructions (Exercises)
+# Trigger DAG manually or wait for schedule
+```
 
-The two DAGs tagged with `part_2` are part of a partially built Airflow pipeline that handles historical weather data. You can find example solutions in the `solutions_exercises` folder.
+DuckDB database is generated automatically during pipeline execution.
 
-Before you get started, go to `include/global_variables/user_input_variables.py` and enter your own info for `HOT_DAY` and `BIRTHYEAR`.
+---
 
-#### Exercise 1 - Datasets
+## BI Dashboard
 
-Both the `extract_historical_weather_data` and `transform_historical_weather_data` DAG currently have their `schedule` set to `None`.
+* DuckDB serves as the analytics backend
+* BI tool connects directly to DuckDB
+* Dashboards visualize trends, aggregations, and insights
 
-Use Datasets to make: 
+📊 Screenshots or setup instructions are included in the repository.
 
-- `extract_historical_weather_data` run after the `start` DAG has finished
-- `transform_historical_weather_data` run after the `extract_historical_weather_data` DAG has finished
+---
 
-You can find information about how to use the Datasets feature in [this guide](https://docs.astronomer.io/learn/airflow-datasets).
+## Assignment Requirements Mapping
 
-After running the two DAGs in order, view your Streamlit app. You will now see a graph with hot days per year. Additionally, parts of the historical weather table will be printed out.
+| Requirement             | Status      |
+| ----------------------- | ----------- |
+| ≥ 3 Data Sources        | ✅           |
+| Parquet Input           | ✅           |
+| PySpark Transformations | ✅           |
+| DuckDB Storage          | ✅           |
+| Orchestration Tool      | ✅ (Airflow) |
+| BI Dashboard            | ✅           |
+| Scalable Architecture   | ✅           |
 
-![Streamlit app](src/part_2_midway_state_streamlit.png)
+---
 
-#### Exercise 2 - Dynamic Task Mapping
+## Team Members & Contributions
 
-The tasks in the `extract_historical_weather_data` currently only retrieve historical weather information for one city. Use dynamic task mapping to retrieve information for three cities.
+* **Member 1** – Pipeline architecture & Airflow DAGs
+* **Member 2** – PySpark transformations & data modeling
+* **Member 3** – DuckDB integration & BI dashboard
 
-You can find instructions on how to use dynamic task mapping in [this guide](https://docs.astronomer.io/learn/dynamic-tasks). Tip: You only need to modify two lines of code!
+---
 
-After completing the exercise, rerun both `extract_historical_weather_data` and `transform_historical_weather_data`.
+## Conclusion
 
-In your Streamlit app, you can now select the different cities from the dropdown box to see how many hot days they had per year.
+This project demonstrates a production-style analytics pipeline using modern data engineering tools. It highlights best practices in scalable data processing, orchestration, and analytics delivery, fully aligned with the assignment requirements.
 
-![Streamlit app](src/part_2_streamlit_dropdown.png)
+---
 
-#### Exercise 3 - Transformation Using Pandas
-
-The table returned by the `find_hottest_day_birthyear` task will be displayed by your Streamlit app. By default, no transformation is made to the input table in the task, so let's change that!
-
-Use Pandas to transform the data shown in `in_table` to search for the hottest day in your birthyear for each city for which you retrieved data.
-
-Tip: Both, the `in_table` dataframe and the `output_df` dataframe are printed to the logs of the `find_hottest_day_birthyear` task. The goal is to have an output as in the screenshot below. If your table does not contain information for several cities, make sure you completed exercise 2 correctly.
-
-![Streamlit app](src/part_2_hottest_day_output.png)
-
-## How it works
-
-### Components and infrastructure
-
-This repository uses a [custom codespaces container](https://github.com/astronomer/devcontainer-features/pkgs/container/devcontainer-features%2Fastro-cli) to install the [Astro CLI](https://docs.astronomer.io/astro/cli/install-cli) and forward ports. 
-
-5 Docker containers will be created and relevant ports will be forwarded for:
-
-- The Airflow scheduler
-- The Airflow webserver
-- The Airflow metastore
-- The Airflow triggerer
-
-Additionally, when using Codespaces, the command to run the Streamlit app is automatically run upon starting the environment.
-
-### Data sources
-
-The global climate data in the local CSV file was retrieved from the [Climate Change: Earth Surface Temperature Data Kaggle dataset](https://www.kaggle.com/datasets/berkeleyearth/climate-change-earth-surface-temperature-data) by Berkely Earth and Kristen Sissener, which was uploaded under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
-
-The current and historical weather data is queried from the [Open Meteo API](https://open-meteo.com/) ([CC BY 4.0](https://creativecommons.org/licenses/by/4.0)).
-
-Project Structure
-================
-
-This repository contains the following files and folders:
-
-- `.astro`: files necessary for Astro CLI commands.
-- `.devcontainer`: the GH codespaces configuration.
-
--  `dags`: all DAGs in your Airflow environment. Files in this folder will be parsed by the Airflow scheduler when looking for DAGs to add to your environment. You can add your own dagfiles in this folder.
-    - `climate_and_current_weather`: folder for DAGs which are used in part 1
-        - `extract_and_load`: DAGs related to data extraction and loading
-            - `extract_current_weather_data.py`
-            - `in_climate_data.py`
-        - `transform`: DAGs transforming data
-            - `transform_climate_data.py`
-    - `historical_weather`: folder for DAGs which are used in part 2
-        - `extract_and_load`: DAGs related to data extraction and loading
-            - `extract_historical_weather_data.py`
-        - `transform`: DAGs transforming data
-            - `transform_historical_weather.py`  
-
-- `include`: supporting files that will be included in the Airflow environment.
-    - `climate_data`: contains a CSV file with global climate data.
-    - `global_variables`: configuration files.
-        - `airflow_conf_variables.py`: file storing variables needed in several DAGs.
-        - `constants.py`: file storing table names.
-        - `user_input_variables.py`: file with user input variables like `MY_NAME` and `MY_CITY`.
-    - `meterology_utils.py`: file containing functions performing calls to the Open Meteo API.
-    - `streamlit_app.py`: file defining the streamlit app.
-
-- `plugins`: folder to place Airflow plugins. Empty.
-- `solutions_exercises`: folder for part 2 solutions.
-    - `solution_extract_historical_weather_data.py`: solution version of the `extract_historical_weather_data` DAG.
-    - `solution_transform_historical_weather.py`: solution version of the `transform_historical_weather` DAG.
-- `src`: contains images used in this README.
-- `tests`: folder to place pytests running on DAGs in the Airflow instance. Contains default tests.
-- `.dockerignore`: list of files to ignore for Docker.
-- `.env`: environment variables. Contains the definition for the DuckDB connection.
-- `.gitignore`: list of files to ignore for git. NOTE that `.env` is not ignored in this project.
-- `Dockerfile`: the Dockerfile using the Astro CLI.
-- `packages.txt`: system-level packages to be installed in the Airflow environment upon building of the Dockerimage.
-- `README.md`: this Readme.
-- `requirements.txt`: python packages to be installed to be used by DAGs upon building of the Dockerimage.
+✅ **Repository is public and submission-ready**
+# advance-ETL-Pipline
