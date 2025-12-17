@@ -214,6 +214,4 @@ aggregations, and performance metrics.
 This project demonstrates a production-style analytics pipeline using modern data engineering tools. It highlights best practices in scalable data processing, orchestration, and analytics delivery, fully aligned with the assignment requirements.
 
 ---
-
-✅ **Repository is public and submission-ready**
 # advance-ETL-Pipline
