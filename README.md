@@ -23,6 +23,8 @@ Organizations often collect data from multiple formats and sources (CSV, Parquet
 
 **Pipeline Flow:**
 
+![Architecture 1](bi/Architecture.png)
+
 ```
 Data Sources (CSV / Parquet / API)
         ↓
