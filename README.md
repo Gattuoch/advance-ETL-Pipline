@@ -186,11 +186,11 @@ aggregations, and performance metrics.
 
 📊 Dashboard Screenshots
 
-Dashboard 1
+BI Dashboard 1.png
 
-Dashboard 2
+Bi Dashboard 2.png
 
-Dashboard 3
+BI Dashboard 3.png
 ---
 
 ## Assignment Requirements Mapping
@@ -209,9 +209,9 @@ Dashboard 3
 
 ## Team Members & Contributions
 
-* **Member 1** – Pipeline architecture & Airflow DAGs
-* **Member 2** – PySpark transformations & data modeling
-* **Member 3** – DuckDB integration & BI dashboard
+* **Gattuoch Chambang     1401298 1** – Pipeline architecture & Airflow DAGs
+* **Danial  Baye 1401105 2** – PySpark transformations & data modeling
+* **Abdihakiim   Mohamed 368713 3** – DuckDB integration & BI dashboard
 
 ---
 
