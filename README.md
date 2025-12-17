@@ -92,15 +92,65 @@ The pipeline is orchestrated using **Apache Airflow**:
 ## Project Structure
 
 ```
-end-to-end-etl/
-├── dags/                  # Airflow DAG definitions
-├── include/               # Raw datasets (CSV / Parquet)
-├── spark/                 # PySpark transformation scripts
-├── plugins/               # Custom Airflow plugins (if any)
-├── docker-compose.yml     # Container orchestration
-├── Dockerfile             # Runtime environment
-├── requirements.txt       # Python dependencies
-├── README.md              # Project documentation
+etl-datasets-tutorial/
+│
+├── .astro/                         # Astro CLI configuration
+│   └── config.yaml
+│
+├── .devcontainer/                  # Dev container setup
+│   ├── devcontainer.json
+│   └── post_create_script.sh
+│
+├── dags/                           # Airflow DAGs (orchestration layer)
+│   ├── example_dag.py
+│   ├── extract_current_weather_data.py
+│   ├── extract_historical_weather_data.py
+│   ├── extract_parquet_data.py
+│   ├── transform_climate_data.py
+│   ├── transform_historical_weather.py
+│   ├── transform_climate_spark.py
+│   └── start.py
+│
+├── include/                        # Shared utilities & configuration
+│   ├── global_variables/
+│   │   ├── airflow_conf_variables.py
+│   │   ├── constants.py
+│   │   └── user_input_variables.py
+│   ├── meteorology_utils.py
+│   └── plugins/
+│
+├── spark/                          # PySpark distributed transformations
+│   ├── transform_climate_spark.py
+│   └── transform_historical_weather_spark.py
+│
+├── data/                           # Raw & intermediate datasets
+│   ├── climate_data/
+│   │   ├── climate.csv
+│   │   └── historical_weather.parquet
+│   └── processed/
+│       └── transformed_data.parquet
+│
+├── dbt/                            # (Bonus) dbt models for DuckDB
+│   ├── dbt_project.yml
+│   ├── models/
+│   │   ├── staging/
+│   │   └── marts/
+│   └── tests/
+│
+├── bi/                             # BI dashboard outputs
+│   ├── BI_Dashboard_1.png
+│   ├── BI_Dashboard_2.png
+│   └── BI_Dashboard_3.png
+│
+├── tests/                          # Unit & data quality tests
+│   └── test_data_integrity.py
+│
+├── docker-compose.override.yml     # Local Airflow services override
+├── requirements.txt                # Python dependencies
+├── profiles.yml                    # dbt DuckDB profile
+├── README.md                       # Project documentation
+└── .gitignore
+
 ```
 
 ---
@@ -134,7 +184,9 @@ DuckDB database is generated automatically during pipeline execution.
 * BI tool connects directly to DuckDB
 * Dashboards visualize trends, aggregations, and insights
 
-📊 Screenshots or setup instructions are included in the repository.
+https://github.com/Gattuoch/advance-ETL-Pipline.git/BI/BI Dashboard 1.png
+https://github.com/Gattuoch/advance-ETL-Pipline.git/BI/BI Dashboard 2.png
+https://github.com/Gattuoch/advance-ETL-Pipline.git/BI/BI Dashboard 3.png
 
 ---
 
