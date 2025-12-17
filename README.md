@@ -92,7 +92,7 @@ The pipeline is orchestrated using **Apache Airflow**:
 ## Project Structure
 
 ```
-etl-datasets-tutorial/
+etl-datasets/
 │
 ├── .astro/                         # Astro CLI configuration
 │   └── config.yaml

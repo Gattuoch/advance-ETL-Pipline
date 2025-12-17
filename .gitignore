@@ -1,3 +1,4 @@
+# .gitigoneore file for etl-datasets project
 .git
 **/.DS_Store # macOS specific ignore
 include/.DS_Store # macOS specific ignore
