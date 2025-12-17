@@ -179,18 +179,21 @@ DuckDB database is generated automatically during pipeline execution.
 ---
 
 ### BI Dashboard
-
-DuckDB serves as the analytics backend for the BI layer.
+DuckDB serves as the analytics backend for the BI layer.  
 The transformed datasets are queried directly to generate insights such as trends,
 aggregations, and performance metrics.
 
-📊 Dashboard Screenshots
+📊 **Dashboard Screenshots**
 
-BI Dashboard 1.png
+### Dashboard 1
+![Dashboard 1](https://github.com/Gattuoch/advance-ETL-Pipline.git/BI/BI Dashboard 1.png)
 
-Bi Dashboard 2.png
+### Dashboard 2
+![Dashboard 2](https://github.com/Gattuoch/advance-ETL-Pipline.git/BI/Bi Dashboard 2.png)
 
-BI Dashboard 3.png
+### Dashboard 3
+![Dashboard 3](https://github.com/Gattuoch/advance-ETL-Pipline.git/BI/BI Dashboard 3.png)
+
 ---
 
 ## Assignment Requirements Mapping
